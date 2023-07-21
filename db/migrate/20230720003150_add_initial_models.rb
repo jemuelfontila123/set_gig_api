@@ -2,7 +2,7 @@ class AddInitialModels < ActiveRecord::Migration[7.0]
   def change 
 
     create_table :admins do |admin|
-      admin.string :name
+      admin.string :username, index: { unique: true, name: 'unique_username'}
       admin.string :role_id, array: true, default: [0]
       admin.string :password_digest
     end 
@@ -13,7 +13,7 @@ class AddInitialModels < ActiveRecord::Migration[7.0]
       schedule.datetime :end_time 
       schedule.boolean :availability, default: true 
     end 
-    
+
     create_table :bookings do |b| 
       b.string :name
       b.string :description
@@ -34,7 +34,7 @@ class AddInitialModels < ActiveRecord::Migration[7.0]
       c.string :first_name 
       c.string :last_name
       c.string :mobile_number 
-      c.string :email_address 
+      c.string :email_address, index: { unique: true, name: 'unique_email_address'}
       c.references :booking, index: true, foreign_key: true
     end
     

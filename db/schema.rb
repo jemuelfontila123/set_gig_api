@@ -15,9 +15,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_003150) do
   enable_extension "plpgsql"
 
   create_table "admins", force: :cascade do |t|
-    t.string "name"
+    t.string "username"
     t.string "role_id", default: ["0"], array: true
     t.string "password_digest"
+    t.index ["username"], name: "unique_username", unique: true
   end
 
   create_table "bookings", force: :cascade do |t|
@@ -37,6 +38,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_003150) do
     t.string "email_address"
     t.bigint "booking_id"
     t.index ["booking_id"], name: "index_contact_information_on_booking_id"
+    t.index ["email_address"], name: "unique_email_address", unique: true
   end
 
   create_table "online_links", force: :cascade do |t|
