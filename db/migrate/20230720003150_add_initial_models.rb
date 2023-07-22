@@ -7,7 +7,6 @@ class AddInitialModels < ActiveRecord::Migration[7.0]
       admin.string :password_digest
     end 
 
-
     create_table :schedules do |schedule| 
       schedule.datetime :start_time 
       schedule.datetime :end_time 
