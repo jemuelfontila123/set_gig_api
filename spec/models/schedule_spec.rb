@@ -5,7 +5,6 @@ RSpec.describe Schedule, type: :model do
         described_class.new(start_time: DateTime.now, end_time: DateTime.now.end_of_day)
     }
 
-
   it "is valid with valid attributes" do 
     expect(subject).to be_valid 
   end

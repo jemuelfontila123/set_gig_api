@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_20_003150) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_26_012843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_003150) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.boolean "availability", default: true
+    t.integer "schedule_type", default: 0
   end
 
   create_table "tentative_lineups", force: :cascade do |t|
