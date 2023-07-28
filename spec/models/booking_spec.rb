@@ -40,6 +40,11 @@ RSpec.describe Booking, type: :model do
         subject.description = nil 
         expect(subject).to_not be_valid
       end
+
+      it "will not be valid without previous_events" do  
+        subject.previous_events = nil 
+        expect(subject).to_not be_valid
+      end
     end
 
     context 'has a band schedule' do 
@@ -58,7 +63,7 @@ RSpec.describe Booking, type: :model do
         subject.schedule = band_schedule
         subject.description = nil 
         expect(subject).to_not be_valid
-      end
+      
     end
 
   end
