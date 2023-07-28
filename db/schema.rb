@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_28_003619) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_28_224200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,14 +30,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_003619) do
     t.index ["schedule_id"], name: "index_bookings_on_schedule_id"
   end
 
-  create_table "contact_information", force: :cascade do |t|
+  create_table "contact_informations", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "mobile_number"
     t.string "email_address"
     t.bigint "booking_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["booking_id"], name: "index_contact_information_on_booking_id"
-    t.index ["email_address"], name: "unique_email_address", unique: true
   end
 
   create_table "online_links", force: :cascade do |t|
@@ -62,7 +63,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_003619) do
   end
 
   add_foreign_key "bookings", "schedules"
-  add_foreign_key "contact_information", "bookings"
   add_foreign_key "online_links", "bookings"
   add_foreign_key "tentative_lineups", "bookings"
 end
