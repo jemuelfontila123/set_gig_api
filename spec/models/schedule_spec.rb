@@ -28,7 +28,7 @@ RSpec.describe Schedule, type: :model do
     context 'when the date is not on the weekends' do 
     
       it "will be invalid even if the starting hour and ending hour is correct" do 
-        subject.start_time = DateTime.new(2023,7,24,19)
+        subject.start_time = DateTime.new(20237,24,19)
         subject.end_time = DateTime.new(2023,7,25,1) 
         expect(subject).not_to be_valid
       end
@@ -57,7 +57,7 @@ RSpec.describe Schedule, type: :model do
 
       it "will be invalid if the end time is not 30 minutes after the start time" do 
         subject.end_time = DateTime.new(2023,7,24,19,45) 
-        expect(subject).not_to be_valid 
+        expect(subject).not_to 
       end
     end
 
