@@ -20,8 +20,19 @@ dates.each do |date|
 end
 
 #Create a month of band schedule
-# dates = (start_date..end_date).to_a.select {|date| date.on_weekday?}
-# dates.each do |date| 
+dates = (start_date..end_date).to_a.select {|date| date.on_weekday?}
+dates.each do |date| 
+  iteration = 0 
+  start_time = DateTime.new(date.year, date.month, date.day, 19)
+  while iteration < 12 
+    end_time = start_time + 30.minutes
+    date = Schedule.find_or_initialize_by(start_time: start_time, end_time: end_time, schedule_type: Schedule.schedule_types[:band])
+    start_time = start_time + 30.minutes 
+    iteration+=1 
+    date.save unless date.persisted?
+  end
+  
+end
 
 #Create Booking - Band/Production
 
