@@ -4,7 +4,7 @@ module Creatable
   class_methods do 
 
   def create
-
+  
 
   end
 

@@ -11,7 +11,7 @@ RSpec.describe OnlineLink, type: :model do
   }
 
   subject {
-    described_class.new(url: 'https://www.betterspecs.org', link_type: 'blog', booking: booking) 
+    described_class.new(url: 'https://www.betterspecs.org', booking: booking) 
   }
 
 
@@ -28,11 +28,5 @@ RSpec.describe OnlineLink, type: :model do
     subject.url = 'https://githubs.com'
     expect(subject).not_to be_valid
   end
-
-  it "is invalid without link_tyoe" do 
-    subject.link_type = nil 
-    expect(subject).not_to be_valid
-  end
-
 
 end

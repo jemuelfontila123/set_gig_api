@@ -2,8 +2,10 @@ class Validators::OnlineLinkValidator < ActiveModel::Validator
   require 'net/http'
 
   def validate(record)
-    record.errors.add(:url, "does not exists") unless is_uri_existing?(record.url)
+    record.errors.add(:url, "url is invalid or not working") unless is_uri_existing?(record.url)
   end
+
+  private
 
   def is_uri_existing?(link)
     begin 
