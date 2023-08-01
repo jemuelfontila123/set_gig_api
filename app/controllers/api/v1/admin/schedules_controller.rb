@@ -22,7 +22,7 @@ class Api::V1::Admin::SchedulesController < Api::V1::Admin::BaseController
   end 
 
   def set_schedule
-    @schedule = Schedule.find(schedule_params)
+    @schedule = Schedule.find(schedule_params[:id])
   end 
 
 end 
