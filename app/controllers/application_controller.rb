@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API 
-
+  include ActionController::HttpAuthentication::Basic::ControllerMethods
+  include ActionController::HttpAuthentication::Token::ControllerMethods
   private 
-
   def encode(payload, exp=1.hours.from_now) 
     JWT.encode({data: payload, exp: exp.to_i},Rails.application.secrets.secret_key_base)
   end
@@ -14,5 +14,6 @@ class ApplicationController < ActionController::API
       return nil 
     end 
   end
+
   
 end

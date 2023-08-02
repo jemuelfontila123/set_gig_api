@@ -1,5 +1,7 @@
 class Api::V1::Admin::SchedulesController < Api::V1::Admin::BaseController 
+
   before_action :set_schedule, only: [:show] 
+  before_action :require_login 
 
   def index  
     production_schedule = Schedule.where(schedule_type: Schedule.schedule_types[:production])
@@ -14,6 +16,8 @@ class Api::V1::Admin::SchedulesController < Api::V1::Admin::BaseController
       render json: {error: 'schedule not found', status: 404}
     end
   end
+
+
 
   private 
 
