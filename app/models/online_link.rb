@@ -7,7 +7,7 @@ class OnlineLink < ApplicationRecord
   before_validation :format_website
 
     
-  belongs_to :booking
+  belongs_to :booking, dependent: :destroy
 
   
   def format_website

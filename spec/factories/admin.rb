@@ -2,6 +2,7 @@
 FactoryBot.define do 
   factory :admin do 
     trait :valid do 
+      id { 1 }
       username {'superadmin'}
       password {'Minimumisten1#'}
     end 

@@ -6,6 +6,8 @@ class Api::V1::Admin::BaseController < ApplicationController
       authenticate_or_request_with_http_token do |token|
         begin
           @jwt_payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
+          # set_admin
+          set_admin
         rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
           render json: {status: 401, error: "authentication failed"}
         end
@@ -16,7 +18,7 @@ class Api::V1::Admin::BaseController < ApplicationController
   end
 
   def set_admin 
-    p @jwt_payload
+    @admin = Admin.find(@jwt_payload['data'])
   end
 
 end

@@ -2,7 +2,7 @@ class Booking < ApplicationRecord
 
   include ActiveModel::Validations
 
-  belongs_to :schedule
+  belongs_to :schedule, dependent: :destroy
   
   enum status: {pending: 0, denied: 1, approved: 2}
 

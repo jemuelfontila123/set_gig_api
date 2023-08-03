@@ -1,11 +1,11 @@
 class Validators::ScheduleValidator < ActiveModel::Validator
   require "active_support/all"
 
-  def validate(record)
+  def validate(record) 
     if record.production? && schedule_exists?(record)
-        production_schedule_check(record)
+      production_schedule_check(record)
     elsif record.band? && schedule_exists?(record)
-        band_schedule_check(record)
+      band_schedule_check(record)
     end 
 
   end

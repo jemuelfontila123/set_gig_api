@@ -5,5 +5,5 @@ class TentativeLineup < ApplicationRecord
   validates :band_name, presence: true 
   validates :genres, presence: true
   
-  belongs_to :booking
+  belongs_to :booking, dependent: :destroy
 end
