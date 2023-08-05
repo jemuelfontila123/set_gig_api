@@ -30,7 +30,21 @@ class Api::V1::Admin::BookingsController < Api::V1::Admin::BaseController
     parameters.require(:booking).permit(:status, :name, :description, :previous_events) 
   end 
 
-  def contact_information_params
+  def contact_information_params 
+    parameters.require(:contact_information).permit(:first_name, :last_name, :mobile_number, :email_address)
+  end 
+
+  def schedule_params 
+    parameters.require(:schedule).permit(:id)
+  end 
+
+  def online_link_params 
+    parameters.require(:online_link).permit(:link_type, :url)
+  end
+
+  def tentative_lineup_params 
+    parameters.require(:tentative_lineup).permit(:band_name, :genres)
+  end 
 
   def set_booking 
     if params[:id].present?

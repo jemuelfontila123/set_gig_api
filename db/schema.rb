@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_28_224200) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_05_155853) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_224200) do
     t.string "username"
     t.string "role_id", default: ["0"], array: true
     t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["username"], name: "unique_username", unique: true
   end
 
@@ -27,6 +29,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_224200) do
     t.text "previous_events"
     t.bigint "schedule_id"
     t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["schedule_id"], name: "index_bookings_on_schedule_id"
   end
 
@@ -45,6 +49,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_224200) do
     t.string "link_type"
     t.text "url"
     t.bigint "booking_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["booking_id"], name: "index_online_links_on_booking_id"
   end
 
@@ -53,12 +59,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_224200) do
     t.datetime "end_time"
     t.boolean "availability", default: true
     t.integer "schedule_type", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tentative_lineups", force: :cascade do |t|
     t.string "band_name"
     t.string "genres", default: [], array: true
     t.bigint "booking_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["booking_id"], name: "index_tentative_lineups_on_booking_id"
   end
 

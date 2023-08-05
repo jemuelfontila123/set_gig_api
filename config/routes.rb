@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       namespace :admin do 
         post '/auth', to: 'authentication#create'
         resources :schedules 
-        resources :bookings 
+        resources :bookings
         resources :contact_informations, only: [:show, :update, :destroy] 
 
       end 

@@ -7,5 +7,5 @@ class ContactInformation < ApplicationRecord
   validates :email_address, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :first_name, presence: true 
   
-  belongs_to :booking, dependent: :destroy
+  belongs_to :booking
 end

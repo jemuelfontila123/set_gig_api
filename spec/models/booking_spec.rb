@@ -53,13 +53,13 @@ RSpec.describe Booking, type: :model do
         expect(subject).to be_valid
       end
 
-      it "will not be valid without production name" do 
+      it "will not be valid without band name" do 
         subject.schedule = band_schedule
         subject.name = nil 
         expect(subject).to_not be_valid
       end
 
-      it "will not be valid without production description" do 
+      it "will not be valid without band description" do 
         subject.schedule = band_schedule
         subject.description = nil 
         expect(subject).to_not be_valid 
