@@ -36,6 +36,11 @@ class Api::V1::Admin::SchedulesController < Api::V1::Admin::BaseController
     end
   end
 
+  def delete 
+    # if skip delete need to add soft delete
+  end
+
+
   private 
 
   def schedule_params 

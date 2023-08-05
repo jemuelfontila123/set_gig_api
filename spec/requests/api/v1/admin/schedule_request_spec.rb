@@ -184,5 +184,16 @@ RSpec.describe 'Schedules', type: :request do
         expect(json[:status]).to eq(404)
       end
     end
+
+    context 'when admin is not logged in' do  
+      it "will return a 401 error" do 
+        schedule = {start_time: DateTime.new(2023,7,23,19), end_time: DateTime.new(2023,7,24,1), schedule_type: "production"}
+        post api_v1_admin_schedules_path, params: {schedule: schedule}
+        json = JSON.parse(response.body).deep_symbolize_keys
+        expect(json[:status]).to eq(401)
+      end
+    end
   end
+
+  
 end
