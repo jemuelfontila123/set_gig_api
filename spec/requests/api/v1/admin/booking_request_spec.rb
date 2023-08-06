@@ -170,9 +170,30 @@ RSpec.describe 'Bookings', type: :request do
         post api_v1_admin_bookings_path, params: {booking: @booking, contact_information: @contact_information, online_link: @online_link}, headers: {"Authorization" => "Bearer #{@jwt}"} 
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:online_link][:url]).to include(@online_link[:url])
-      end 
+      end  
 
+      it "will be invalid if booking is invalid even if all the association attributes are valid" do 
+        @booking[:name] = nil
+        post api_v1_admin_bookings_path, params: {booking: @booking, contact_information: @contact_information, online_link: @online_link}, headers: {"Authorization" => "Bearer #{@jwt}"} 
+        json = JSON.parse(response.body).deep_symbolize_keys
+        expect(json[:error_message]).to include("Validation failed")
+      end
+
+      it "will be invalid if booking is valid even if one of the association attributes are invalid" do 
+        @contact_information[:email_address] = '2151252'
+        post api_v1_admin_bookings_path, params: {booking: @booking, contact_information: @contact_information, online_link: @online_link}, headers: {"Authorization" => "Bearer #{@jwt}"} 
+        json = JSON.parse(response.body).deep_symbolize_keys
+        expect(json[:error_message]).to include("Email address is invalid")
+      end
     end 
+
+    context 'when admin is not logged in' do  
+      it "will return a 401 error" do 
+        post api_v1_admin_bookings_path
+        json = JSON.parse(response.body).deep_symbolize_keys
+        expect(json[:status]).to eq(401)
+      end
+    end
   end
   
 
