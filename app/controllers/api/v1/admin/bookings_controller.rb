@@ -17,39 +17,40 @@ class Api::V1::Admin::BookingsController < Api::V1::Admin::BaseController
   end
   
   def update 
-    if @booking.present? && @booking.update(booking_params) 
-      render json: {booking: @booking, status: 200} 
-    else 
-      render json: {error_message: "An error has occured", status: 404} 
+    begin 
+      if @booking.present? && @booking.update(booking_params[:booking]) 
+        render json: {booking: @booking, status: 200} 
+      else 
+        render json: {error_message: "An error has occured", status: 404} 
+      end 
+    rescue StandardError => e 
+      render json: {error_message: e.message, status:404}
     end 
-  end 
+  end  
+
+  def create
+    booking = Booking.create_booking(booking_params)
+    unless booking.instance_of? String
+      render json: booking , include: ['contact_information', 'online_link']
+    else 
+      render json: {error_message: booking, status: 404}
+    end
+  end  
 
   private  
 
   def booking_params
-    parameters.require(:booking).permit(:status, :name, :description, :previous_events) 
-  end 
-
-  def contact_information_params 
-    parameters.require(:contact_information).permit(:first_name, :last_name, :mobile_number, :email_address)
-  end 
-
-  def schedule_params 
-    parameters.require(:schedule).permit(:id)
-  end 
-
-  def online_link_params 
-    parameters.require(:online_link).permit(:link_type, :url)
-  end
-
-  def tentative_lineup_params 
-    parameters.require(:tentative_lineup).permit(:band_name, :genres)
+    params.permit(booking: [:status, :name, :description, :previous_events, :schedule_id],
+                  contact_information: [:first_name, :last_name, :email_address, :mobile_number], 
+                  online_link: [:link_type, :url],
+                  tentative_lineup: [:band_name, :genres]
+                 ) 
   end 
 
   def set_booking 
-    if params[:id].present?
+    if params[:id].present? 
       @booking = Booking.find(params[:id]) rescue nil 
-    else 
+    else
       @booking = nil 
     end 
   end 
