@@ -37,6 +37,11 @@ class Api::V1::Admin::BookingsController < Api::V1::Admin::BaseController
     end
   end  
 
+
+  # Need to create soft deletion
+  def delete 
+  end
+
   private  
 
   def booking_params

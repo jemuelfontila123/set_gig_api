@@ -9,9 +9,15 @@ Rails.application.routes.draw do
         post '/auth', to: 'authentication#create'
         resources :schedules 
         resources :bookings
-        resources :contact_informations, only: [:show, :update, :destroy] 
+        resources :contact_informations
+        resources :online_links 
+        resources :tentative_lineups
+      end  
 
-      end 
+      namespace :guest do 
+        resources :schedules 
+        resources :bookings, only: [:create]
+      end
 
     end 
   end
