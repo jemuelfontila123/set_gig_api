@@ -7,6 +7,7 @@ FactoryBot.define do
     schedule nil  
     after(:create) do |booking|
       create(:contact_information, booking_id: booking.id)
+      create(:online_link, booking_id: booking.id)
     end
   end
 end

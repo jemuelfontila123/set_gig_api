@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'ContactInformations', type: :request do 
+RSpec.describe 'OnlineLinks', type: :request do 
 
   let(:valid_admin) {create(:admin, :valid)} 
 
@@ -11,7 +11,7 @@ RSpec.describe 'ContactInformations', type: :request do
         create(:schedule, :production)
         create(:schedule, :band)
         @jwt = admin_login(@admin)
-        get api_v1_admin_contact_informations_path, headers: {"Authorization" => "Bearer #{@jwt}"}
+        get api_v1_admin_online_links_path, headers: {"Authorization" => "Bearer #{@jwt}"}
       end
 
       it "will return status 200" do  
@@ -21,15 +21,15 @@ RSpec.describe 'ContactInformations', type: :request do
 
       it "will return the bookings" do 
         json = JSON.parse(response.body).deep_symbolize_keys 
-        expect(json[:contact_informations].length).to eq(2)
+        expect(json[:online_links].length).to eq(2)
       end
     end
 
-    context 'there are no contact_informations and admin logged in' do
+    context 'there are no online links and admin logged in' do
       before do 
         @admin = valid_admin
         @jwt = admin_login(@admin)
-        get api_v1_admin_contact_informations_path, headers: {"Authorization" => "Bearer #{@jwt}"}
+        get api_v1_admin_online_links_path, headers: {"Authorization" => "Bearer #{@jwt}"}
       end
 
       it "will return status 200" do  
@@ -39,13 +39,13 @@ RSpec.describe 'ContactInformations', type: :request do
 
       it "will return the bookings" do 
         json = JSON.parse(response.body).deep_symbolize_keys
-        expect(json[:contact_informations].length).to eq(0)
+        expect(json[:online_links].length).to eq(0)
       end
     end
 
     context 'when admin is not logged in' do  
       it "will return a 401 error" do 
-        get api_v1_admin_contact_informations_path
+        get api_v1_admin_online_links_path
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:status]).to eq(401)
       end
@@ -53,7 +53,7 @@ RSpec.describe 'ContactInformations', type: :request do
   end
 
   describe '#show' do 
-    context 'when the contact information is existing' do
+    context 'when the online link is existing' do
       before do
         @admin = valid_admin
         @jwt = admin_login(@admin)
@@ -61,19 +61,19 @@ RSpec.describe 'ContactInformations', type: :request do
       end
 
       it "will return status 200" do 
-        get api_v1_admin_contact_information_path(5), headers: {"Authorization" => "Bearer #{@jwt}"}
+        get api_v1_admin_online_link_path(5), headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys 
         expect(json[:status]).to eq(200)
       end
 
-      it "will return the existing contact information" do 
+      it "will return the existing online link" do 
         get api_v1_admin_contact_information_path(6), headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:contact_information][:first_name]).to eq('Jemu')
       end
     end
 
-    context 'when the contact information is not existing' do 
+    context 'when the online link is not existing' do 
       before do 
         @admin = valid_admin
         jwt = admin_login(@admin)
@@ -88,7 +88,7 @@ RSpec.describe 'ContactInformations', type: :request do
 
     context 'when admin is not logged in' do  
       it "will return a 401 error" do 
-        get api_v1_admin_contact_information_path(1)
+        get api_v1_admin_online_link_path(1)
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:status]).to eq(401)
       end
@@ -96,33 +96,34 @@ RSpec.describe 'ContactInformations', type: :request do
   end
 
   describe '#update' do 
-    context 'when the schedule is existing' do
+    context 'when the online link is existing' do
       before do
         @admin = valid_admin
         @jwt = admin_login(@admin)
         @schedule = create(:schedule, :production) 
       end
 
-      it "will return status 200 when there is params booking regardless of its attribute" do 
-        put api_v1_admin_contact_information_path(7), params: {contact_information: {le: '2'}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+      it "will return status 200 when there is params online link regardless of its attribute" do 
+        put api_v1_admin_online_link_path(9), params: {online_link: {le: '2'}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        p OnlineLink.first
         json = JSON.parse(response.body).deep_symbolize_keys 
         expect(json[:status]).to eq(200)
       end
 
       it "will update the attribute that is valid" do 
-        put api_v1_admin_contact_information_path(8), params: {contact_information: {first_name: "testing123"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        put api_v1_admin_online_link_path(10), params: {online_link: {url: "youtube.com"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
-        expect(json[:contact_information][:first_name]).to eq('testing123')
+        expect(json[:online_link][:url]).to include('youtube.com')
       end
 
       it "will not update when the attribute is invalid" do 
-        put api_v1_admin_contact_information_path(9), params: {contact_information: {first_name: ""}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        put api_v1_admin_online_link_path(11), params: {online_link: {url: "6236236236"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:status]).to eq(404)
       end
     end
 
-    context 'when the schedule is not existing' do 
+    context 'when the booking is not existing' do 
       before do 
         @admin = valid_admin
         jwt = admin_login(@admin)
@@ -142,5 +143,5 @@ RSpec.describe 'ContactInformations', type: :request do
         expect(json[:status]).to eq(401)
       end
     end
-  end 
+  end
 end 
