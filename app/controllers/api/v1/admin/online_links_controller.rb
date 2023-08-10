@@ -19,8 +19,8 @@ class Api::V1::Admin::OnlineLinksController < Api::V1::Admin::BaseController
   
   def update 
     begin 
-      if @nline_link.present? && @online_link.update(online_link_params) 
-        render json: {online_link: @conline_link, status: 200} 
+      if @online_link.present? && @online_link.update(online_link_params) 
+        render json: {online_link: @online_link, status: 200} 
       else 
         render json: {error_message: "An error has occured", status: 404} 
       end 
