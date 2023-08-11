@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       end  
 
       namespace :guest do 
-        resources :schedules 
+        resources :schedules, only: [:index]
         resources :bookings, only: [:create]
       end
 
