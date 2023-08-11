@@ -61,13 +61,13 @@ RSpec.describe 'TentativeLineups', type: :request do
       end
 
       it "will return status 200" do 
-        get api_v1_admin_tentative_lineup_path(3), headers: {"Authorization" => "Bearer #{@jwt}"}
+        get api_v1_admin_tentative_lineup_path(@schedule.booking.tentative_lineup), headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys 
         expect(json[:status]).to eq(200)
       end
 
-      it "will return the existing online link" do 
-        get api_v1_admin_tentative_lineup_path(4), headers: {"Authorization" => "Bearer #{@jwt}"}
+      it "will return the existing tentative lineup" do 
+        get api_v1_admin_tentative_lineup_path(@schedule.booking.tentative_lineup), headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:tentative_lineup][:genres].length).to eq(1)
       end
@@ -104,19 +104,19 @@ RSpec.describe 'TentativeLineups', type: :request do
       end
 
       it "will return status 200 when there is params tentative lineup regardless of its attribute" do 
-        put api_v1_admin_tentative_lineup_path(5), params: {tentative_lineup: {le: '2'}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        put api_v1_admin_tentative_lineup_path(@schedule.booking.tentative_lineup), params: {tentative_lineup: {le: '2'}}, headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys 
         expect(json[:status]).to eq(200)
       end
 
       it "will update the attribute that is valid" do 
-        put api_v1_admin_tentative_lineup_path(6), params: {tentative_lineup: {band_name: "Parokya"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        put api_v1_admin_tentative_lineup_path(@schedule.booking.tentative_lineup), params: {tentative_lineup: {band_name: "Parokya"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:tentative_lineup][:band_name]).to include('Parokya')
       end
 
       it "will not update when the attribute is invalid" do 
-        put api_v1_admin_tentative_lineup_path(7), params: {tentative_lineup: {genres: "aw"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        put api_v1_admin_tentative_lineup_path(@schedule.booking.tentative_lineup), params: {tentative_lineup: {genres: "aw"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:status]).to eq(404)
       end

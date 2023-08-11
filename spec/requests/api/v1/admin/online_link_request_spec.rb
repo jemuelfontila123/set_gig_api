@@ -20,7 +20,7 @@ RSpec.describe 'OnlineLinks', type: :request do
 
       it "will return the bookings" do 
         json = JSON.parse(response.body).deep_symbolize_keys 
-        expect(json[:online_links].length).to eq(2)
+        expect(json[:online_links].length).to eq(1)
       end
     end
 
@@ -60,13 +60,13 @@ RSpec.describe 'OnlineLinks', type: :request do
       end
 
       it "will return status 200" do 
-        get api_v1_admin_online_link_path(5), headers: {"Authorization" => "Bearer #{@jwt}"}
+        get api_v1_admin_online_link_path(@schedule.booking.online_link.id), headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys 
         expect(json[:status]).to eq(200)
       end
 
       it "will return the existing online link" do 
-        get api_v1_admin_contact_information_path(6), headers: {"Authorization" => "Bearer #{@jwt}"}
+        get api_v1_admin_contact_information_path(@schedule.booking.online_link.id), headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:contact_information][:first_name]).to eq('Jemu')
       end
@@ -103,19 +103,19 @@ RSpec.describe 'OnlineLinks', type: :request do
       end
 
       it "will return status 200 when there is params online link regardless of its attribute" do 
-        put api_v1_admin_online_link_path(7), params: {online_link: {le: '2'}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        put api_v1_admin_online_link_path(@schedule.booking.online_link), params: {online_link: {le: '2'}}, headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys 
         expect(json[:status]).to eq(200)
       end
 
       it "will update the attribute that is valid" do 
-        put api_v1_admin_online_link_path(8), params: {online_link: {url: "youtube.com"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        put api_v1_admin_online_link_path(@schedule.booking.online_link), params: {online_link: {url: "youtube.com"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:online_link][:url]).to include('youtube.com')
       end
 
       it "will not update when the attribute is invalid" do 
-        put api_v1_admin_online_link_path(9), params: {online_link: {url: "6236236236"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        put api_v1_admin_online_link_path(@schedule.booking.online_link), params: {online_link: {url: "6236236236"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:status]).to eq(404)
       end
@@ -142,3 +142,4 @@ RSpec.describe 'OnlineLinks', type: :request do
       end
     end
   end
+end

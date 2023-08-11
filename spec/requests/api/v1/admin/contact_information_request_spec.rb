@@ -61,13 +61,13 @@ RSpec.describe 'ContactInformations', type: :request do
       end
 
       it "will return status 200" do 
-        get api_v1_admin_contact_information_path(5), headers: {"Authorization" => "Bearer #{@jwt}"}
+        get api_v1_admin_contact_information_path(@schedule.booking.contact_information.id), headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys 
         expect(json[:status]).to eq(200)
       end
 
       it "will return the existing contact information" do 
-        get api_v1_admin_contact_information_path(6), headers: {"Authorization" => "Bearer #{@jwt}"}
+        get api_v1_admin_contact_information_path(@schedule.booking.contact_information.id), headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:contact_information][:first_name]).to eq('Jemu')
       end
@@ -104,19 +104,19 @@ RSpec.describe 'ContactInformations', type: :request do
       end
 
       it "will return status 200 when there is params booking regardless of its attribute" do 
-        put api_v1_admin_contact_information_path(7), params: {contact_information: {le: '2'}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        put api_v1_admin_contact_information_path(@schedule.booking.contact_information.id), params: {contact_information: {le: '2'}}, headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys 
         expect(json[:status]).to eq(200)
       end
 
       it "will update the attribute that is valid" do 
-        put api_v1_admin_contact_information_path(8), params: {contact_information: {first_name: "testing123"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        put api_v1_admin_contact_information_path(@schedule.booking.contact_information.id), params: {contact_information: {first_name: "testing123"}}, headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:contact_information][:first_name]).to eq('testing123')
       end
 
       it "will not update when the attribute is invalid" do 
-        put api_v1_admin_contact_information_path(9), params: {contact_information: {first_name: ""}}, headers: {"Authorization" => "Bearer #{@jwt}"}
+        put api_v1_admin_contact_information_path(@schedule.booking.contact_information.id), params: {contact_information: {first_name: ""}}, headers: {"Authorization" => "Bearer #{@jwt}"}
         json = JSON.parse(response.body).deep_symbolize_keys
         expect(json[:status]).to eq(404)
       end
