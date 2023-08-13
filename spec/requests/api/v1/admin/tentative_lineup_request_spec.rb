@@ -9,7 +9,7 @@ RSpec.describe 'TentativeLineups', type: :request do
       before do 
         @admin = valid_admin
         create(:schedule, :production)
-        create(:schedule, :band)
+        create(:schedule, :band_open)
         @jwt = admin_login(@admin)
         get api_v1_admin_tentative_lineups_path, headers: {"Authorization" => "Bearer #{@jwt}"}
       end
@@ -57,7 +57,7 @@ RSpec.describe 'TentativeLineups', type: :request do
       before do
         @admin = valid_admin
         @jwt = admin_login(@admin)
-        @schedule = create(:schedule, :band) 
+        @schedule = create(:schedule, :band_open) 
       end
 
       it "will return status 200" do 
@@ -100,7 +100,7 @@ RSpec.describe 'TentativeLineups', type: :request do
       before do
         @admin = valid_admin
         @jwt = admin_login(@admin)
-        @schedule = create(:schedule, :band) 
+        @schedule = create(:schedule, :band_open) 
       end
 
       it "will return status 200 when there is params tentative lineup regardless of its attribute" do 

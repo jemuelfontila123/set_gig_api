@@ -8,8 +8,8 @@ RSpec.describe 'Bookings', type: :request do
     context 'there are bookings and admin logged in' do
       before do 
         @admin = valid_admin
-        create(:schedule, :production)
-        create(:schedule, :band)
+        create(:schedule, :production_open)
+        create(:schedule, :band_open)
         @jwt = admin_login(@admin)
         get api_v1_admin_bookings_path, headers: {"Authorization" => "Bearer #{@jwt}"}
       end
@@ -57,7 +57,7 @@ RSpec.describe 'Bookings', type: :request do
       before do
         @admin = valid_admin
         @jwt = admin_login(@admin)
-        @schedule = create(:schedule, :production) 
+        @schedule = create(:schedule, :production_open) 
       end
 
       it "will return status 200" do 
@@ -100,7 +100,7 @@ RSpec.describe 'Bookings', type: :request do
       before do
         @admin = valid_admin
         @jwt = admin_login(@admin)
-        @schedule = create(:schedule, :production) 
+        @schedule = create(:schedule, :production_open) 
       end
 
       it "will return status 200 when there is params booking regardless of its attribute" do 
@@ -149,7 +149,7 @@ RSpec.describe 'Bookings', type: :request do
       before do
         @admin = valid_admin
         @jwt = admin_login(@admin)
-        @schedule = create(:schedule, :production) 
+        @schedule = create(:schedule, :production_open) 
         @booking = {name: "bobook", schedule_id: @schedule.id, previous_events: "test", description: "test"}
         @contact_information = {first_name: "jim", last_name: "tests", email_address: "tests123@gmail.com", mobile_number: "09196022579"}
         @online_link = {url: "facebook.com"} 

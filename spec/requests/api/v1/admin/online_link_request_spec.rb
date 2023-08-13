@@ -8,7 +8,7 @@ RSpec.describe 'OnlineLinks', type: :request do
     context 'there are contact_informations and admin logged in' do
       before do 
         @admin = valid_admin
-        create(:schedule, :band)
+        create(:schedule, :band_open)
         @jwt = admin_login(@admin)
         get api_v1_admin_online_links_path, headers: {"Authorization" => "Bearer #{@jwt}"}
       end
@@ -56,7 +56,7 @@ RSpec.describe 'OnlineLinks', type: :request do
       before do
         @admin = valid_admin
         @jwt = admin_login(@admin)
-        @schedule = create(:schedule, :production) 
+        @schedule = create(:schedule, :production_open) 
       end
 
       it "will return status 200" do 
@@ -99,7 +99,7 @@ RSpec.describe 'OnlineLinks', type: :request do
       before do
         @admin = valid_admin
         @jwt = admin_login(@admin)
-        @schedule = create(:schedule, :production) 
+        @schedule = create(:schedule, :production_open) 
       end
 
       it "will return status 200 when there is params online link regardless of its attribute" do 

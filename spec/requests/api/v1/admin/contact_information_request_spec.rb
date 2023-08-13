@@ -8,8 +8,8 @@ RSpec.describe 'ContactInformations', type: :request do
     context 'there are contact_informations and admin logged in' do
       before do 
         @admin = valid_admin
-        create(:schedule, :production)
-        create(:schedule, :band)
+        create(:schedule, :production_open)
+        create(:schedule, :band_open)
         @jwt = admin_login(@admin)
         get api_v1_admin_contact_informations_path, headers: {"Authorization" => "Bearer #{@jwt}"}
       end
@@ -57,7 +57,7 @@ RSpec.describe 'ContactInformations', type: :request do
       before do
         @admin = valid_admin
         @jwt = admin_login(@admin)
-        @schedule = create(:schedule, :production) 
+        @schedule = create(:schedule, :production_open) 
       end
 
       it "will return status 200" do 
@@ -100,7 +100,7 @@ RSpec.describe 'ContactInformations', type: :request do
       before do
         @admin = valid_admin
         @jwt = admin_login(@admin)
-        @schedule = create(:schedule, :production) 
+        @schedule = create(:schedule, :production_open) 
       end
 
       it "will return status 200 when there is params booking regardless of its attribute" do 
