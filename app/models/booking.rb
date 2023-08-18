@@ -17,15 +17,14 @@ class Booking < ApplicationRecord
   default_scope {order(created_at: :asc)} 
 
   def self.create_booking(opts = {})
-    ActiveRecord::Base.transaction do 
-      booking = Booking.create!(opts[:booking])
-      booking.create_online_link!(opts[:online_link]) if opts[:online_link].present?
-      booking.create_contact_information!(opts[:contact_information])  if opts[:contact_information].present?
-      booking.create_tentative_lineup!(opts[:tentative_lineup]) if opts[:tentative_lineup].present?
-      return booking
-    end 
+    Booking.transaction do 
+      @booking = Booking.create!(opts[:booking])
+      @booking.create_online_link!(opts[:online_link])  
+      @booking.create_contact_information!(opts[:contact_information])  
+      @booking.create_tentative_lineup!(opts[:tentative_lineup]) if opts[:tentative_lineup].present? 
+    end
+    return @booking
   rescue ActiveRecord::RecordInvalid => e
     return e.message
   end
-  
 end

@@ -25,6 +25,7 @@ module SetGig
     # config.autoload_paths += Dir[File.join(Rails.root, 'app', 'models', 'validators
 
     config.api_only = true
+
     
     # config.active_record.default_timezone = :local
     # config.time_zone = "Asia/Manila"

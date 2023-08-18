@@ -3,6 +3,7 @@ class Api::V1::Guest::BookingsController < ApplicationController
   def create 
     booking = Booking.create_booking(booking_params)
     unless booking.instance_of? String
+      ContactInformationMailer.with(contact_information: booking.contact_information).booking_success_email.deliver_later
       render json: {success_message: 'Booking successfully made. Please wait for an email', status: 200}
     else 
       render json: {error_message: booking, status: 404}

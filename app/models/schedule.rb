@@ -1,6 +1,6 @@
 class Schedule < ApplicationRecord 
 
-  has_one :booking, dependent: :destroy 
+  has_many :bookings, dependent: :destroy 
   
   include ActiveModel::Validations
   validates_with Validators::ScheduleValidator
