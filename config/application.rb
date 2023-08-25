@@ -5,7 +5,12 @@ require "rails/all"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+# Load dotenv only in development or test environment
+if ['development', 'test'].include? ENV['RAILS_ENV']
+  Dotenv::Railtie.load
+end
 
+HOSTNAME = ENV['HOSTNAME']
 module SetGig
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -25,7 +30,6 @@ module SetGig
     # config.autoload_paths += Dir[File.join(Rails.root, 'app', 'models', 'validators
 
     config.api_only = true
-
     
     # config.active_record.default_timezone = :local
     # config.time_zone = "Asia/Manila"

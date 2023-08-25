@@ -59,16 +59,23 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
-  config.action_mailer.delivery_method = :sendmail
   # Defaults to:
   # config.action_mailer.sendmail_settings = {
   #   location: '/usr/sbin/sendmail',
   #   arguments: '-i'
   # }
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_options = {from: 'no-reply@example.com'}
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = { host: ENV["SMTP_EMAIL"]}
 
+  # SMTP settings for gmail
+  config.action_mailer.smtp_settings = {
+    :address              => ENV["SMTP_ADDRESS"],
+    :port                 => 587,
+    :user_name            => ENV["SMTP_EMAIL"],
+    :password             => ENV["SMTP_PASSWORD"],
+    :authentication       => 'plain',
+    :enable_starttls_auto => true
+  }
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 end
