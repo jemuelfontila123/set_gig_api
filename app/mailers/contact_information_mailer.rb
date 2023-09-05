@@ -1,5 +1,4 @@
 class ContactInformationMailer < ApplicationMailer
-  # default from: 'notifications@example.com'
 
   def booking_success_email
     @user = params[:contact_information]

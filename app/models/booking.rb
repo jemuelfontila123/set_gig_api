@@ -14,7 +14,16 @@ class Booking < ApplicationRecord
   validates :name, presence: true
   validates :description, presence: true
 
-  default_scope {order(created_at: :asc)} 
+  default_scope {order(created_at: :asc)}  
+
+  after_create_commit :temporarily_close_schedule, on: :create 
+
+  WAITING_TIME = 3.hours
+
+  def temporarily_close_schedule 
+    schedule.update(availability: false)
+    OpenScheduleJob.set(wait: WAITING_TIME).perform_later(schedule)
+  end
 
   def self.create_booking(opts = {})
     Booking.transaction do 
