@@ -19,8 +19,13 @@ class Schedule < ApplicationRecord
       dates = DateHelper.generate_band_dates(start_date, end_date) 
     end 
     dates.each do |date|
-      sched = Schedule.find_or_initialize_by(start_time: date[:start_time], end_time: date[:end_time],  schedule_type: Schedule.schedule_types[:production]) 
-      schedules << sched unless sched.persisted? 
+      sched = Schedule.find_or_initialize_by(start_time: date[:start_time]) 
+      schedules << {start_time: date[:start_time], end_time: date[:end_time], schedule_type: schedule_type} unless sched.persisted? 
+    end  
+    begin 
+      Schedule.insert_all(schedules)
+    rescue StandardError => e 
+      return e.message 
     end 
     schedules
   end
