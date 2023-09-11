@@ -6,7 +6,7 @@ class OpenScheduleJob < ApplicationJob
     begin 
       schedule.update(availability: true) 
     rescue StandardError => e 
-      p "Error"
+      p error.message 
     end
   end
 end

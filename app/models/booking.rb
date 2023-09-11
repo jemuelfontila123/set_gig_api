@@ -16,9 +16,15 @@ class Booking < ApplicationRecord
 
   default_scope {order(created_at: :asc)}  
 
-  after_create_commit :temporarily_close_schedule, on: :create 
+  after_commit :temporarily_close_schedule, on: :create, if: Proc.new {|obj| obj.status!="approved"} 
+  after_commit :update_related_bookings, on: :update, if: Proc.new { |obj| obj.saved_change_to_status? && obj.status == "approved"}
 
-  WAITING_TIME = 3.hours
+  WAITING_TIME = 3.hours 
+
+  def update_related_bookings 
+    bookings_to_update = schedule.bookings.where.not(id: id)  
+    bookings_to_update.update_all(status: Booking.statuses[:denied])  
+  end
 
   def temporarily_close_schedule 
     schedule.update(availability: false)
@@ -35,5 +41,6 @@ class Booking < ApplicationRecord
     return @booking
   rescue ActiveRecord::RecordInvalid => e
     return e.message
-  end
+  end  
+
 end

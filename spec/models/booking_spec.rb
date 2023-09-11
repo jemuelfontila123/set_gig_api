@@ -64,10 +64,42 @@ RSpec.describe Booking, type: :model do
         subject.description = nil 
         expect(subject).to_not be_valid 
       end
-      
     end
+  end 
+
+  describe '#temporarily_close_schedule' do 
+
+  context 'when status is not approved' do 
+    it "will close the schedule availability" do 
+      expect {Booking.create!(name: "booking_1", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "denied")
+             }.to change{production_schedule.availability}.from(true). to(false)
+    end
+  end
+
+  context 'when status is approved' do 
+    it "will not change the schedule availability" do 
+      expect {Booking.create!(name: "booking_1", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "approved")
+              }.not_to change{production_schedule.availability}
+    end
+  end
 
   end
 
+  describe '#update_related_bookings' do 
+    before(:each) do 
+      allow_any_instance_of(Booking).to receive_messages(:temporarily_close_schedule => nil)
+      @booking_1 = Booking.create!(name: "booking_1", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "denied")
+      @booking_2 = Booking.create!(name: "booking_2", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "pending" )
+    end
+    
+    context 'when booking status is updated' do  
+      it "will change the status of other booking related to the schedule to denied if the status is approved" do  
+        expect {@booking_1.update(status: Booking.statuses[:approved])}.to change{@booking_2.reload.status}.from("pending"). to("denied")
+      end
+      it "will not change the status of other booking related to the schedule to denied if the status is not approved" do  
+        expect {@booking_1.update(status: Booking.statuses[:denied])}.not_to change{@booking_2.reload.status}
+      end
+    end
+  end
 
 end
