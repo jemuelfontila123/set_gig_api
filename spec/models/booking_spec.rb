@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Booking, type: :model do 
-    
+     
   let(:production_schedule) { 
     Schedule.new(start_time: DateTime.new(2023,7,23,19), end_time: DateTime.new(2023,7,24,1), schedule_type: Schedule.schedule_types[:production])
   } 
@@ -10,8 +10,12 @@ RSpec.describe Booking, type: :model do
     Schedule.new(start_time: DateTime.new(2023,7,24,19), end_time: DateTime.new(2023,7,24,19,30), schedule_type: Schedule.schedule_types[:band])
   }
 
+  let(:user){
+    ContactInformation.new(first_name: 'Jemuel', last_name: 'Fontila', mobile_number: '09126022573', email_address: 'jemuel123@gmail.com')
+  } 
+
   subject {
-    Booking.new(name: "booking", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule )
+    Booking.new(name: "booking", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, contact_information: user)
   }
 
 
@@ -22,7 +26,15 @@ RSpec.describe Booking, type: :model do
       expect(subject).to_not be_valid
     end
 
-  end
+  end 
+
+  describe 'booking without contact_information' do 
+
+    it "will fail" do 
+      subject.contact_information = nil 
+      expect(subject).to_not be_valid 
+    end
+  end 
 
   describe 'booking with schedule' do 
    
@@ -71,14 +83,14 @@ RSpec.describe Booking, type: :model do
 
   context 'when status is not approved' do 
     it "will close the schedule availability" do 
-      expect {Booking.create!(name: "booking_1", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "denied")
+      expect {Booking.create!(name: "booking_1", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "denied", contact_information: user)
              }.to change{production_schedule.availability}.from(true). to(false)
     end
   end
 
   context 'when status is approved' do 
     it "will not change the schedule availability" do 
-      expect {Booking.create!(name: "booking_1", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "approved")
+      expect {Booking.create!(name: "booking_1", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "approved", contact_information: user)
               }.not_to change{production_schedule.availability}
     end
   end
@@ -88,8 +100,8 @@ RSpec.describe Booking, type: :model do
   describe '#update_related_bookings' do 
     before(:each) do 
       allow_any_instance_of(Booking).to receive_messages(:temporarily_close_schedule => nil)
-      @booking_1 = Booking.create!(name: "booking_1", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "denied")
-      @booking_2 = Booking.create!(name: "booking_2", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "pending" )
+      @booking_1 = Booking.create!(name: "booking_1", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "denied", contact_information: user)
+      @booking_2 = Booking.create!(name: "booking_2", description: "type of booking", previous_events: "at intramuros", schedule: production_schedule, status: "pending", contact_information: user)
     end
     
     context 'when booking status is updated' do  

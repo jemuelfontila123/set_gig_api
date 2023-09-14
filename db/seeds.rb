@@ -36,12 +36,12 @@ end
 #Create Booking - Production
 production_schedule = Schedule.where(schedule_type: Schedule.schedule_types[:production]).limit(5)
 production_schedule.each do |schedule|
-  booking = Booking.find_or_initialize_by(schedule: schedule, name: Faker::Music.band, previous_events: Faker::Quote.famous_last_words, description: Faker::Quote.robin)
+  contact_information = ContactInformation.find_or_initialize_by(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, mobile_number: '09196022579', email_address: Faker::Internet.email)
+  booking = Booking.find_or_initialize_by(schedule: schedule, name: Faker::Music.band, previous_events: Faker::Quote.famous_last_words, description: Faker::Quote.robin, contact_information: contact_information)
   online_link = OnlineLink.find_or_initialize_by(url: "https://www.youtube.com/watch?v=SsL6RVQlIRk", booking: booking)
-  contact_information = ContactInformation.find_or_initialize_by(booking: booking, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, mobile_number: '09196022579', email_address: Faker::Internet.email)
-  if booking.new_record? && booking.save 
+  if contact_information.new_record? && contact_information.save 
     online_link.save if online_link.new_record? 
-    contact_information.save if contact_information.new_record? 
+    booking.save if booking.new_record? 
   end 
 
 end
@@ -49,13 +49,13 @@ end
 #Create Booking - Band Schedule 
 band_schedule = Schedule.where(schedule_type: Schedule.schedule_types[:band]).limit(100) 
 band_schedule.each do |schedule|
-  booking = Booking.find_or_initialize_by(schedule: schedule, name: Faker::Music.band, description: Faker::Quote.robin)
+  contact_information = ContactInformation.find_or_initialize_by(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, mobile_number: '09196022579', email_address: Faker::Internet.email)
+  booking = Booking.find_or_initialize_by(schedule: schedule, name: Faker::Music.band, description: Faker::Quote.robin, contact_information: contact_information)
   online_link = OnlineLink.find_or_initialize_by(url: "https://www.youtube.com/watch?v=SsL6RVQlIRk", booking: booking)
   tentative_lineup = TentativeLineup.find_or_initialize_by(booking: booking, band_name: Faker::Music.band, genres: [Faker::Music.genre])
-  contact_information = ContactInformation.find_or_initialize_by(booking: booking, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, mobile_number: '09196022579', email_address: Faker::Internet.email)
-  if booking.new_record? && booking.save 
+  if contact_information.new_record? && contact_information.save 
     online_link.save if online_link.new_record? 
-    contact_information.save if contact_information.new_record? 
+    booking.save if booking.new_record? 
     tentative_lineup.save if tentative_lineup.new_record?
   end 
 end

@@ -4,7 +4,7 @@ class Admin < ApplicationRecord
   
   include ActiveModel::Validations
   validates_with Validators::AdminValidator 
-  validates :password, length: {minimum: 10}
+  validates :password, length: {minimum: 10}, presence: true
   validates :username, uniqueness: true, presence: true
   
 end

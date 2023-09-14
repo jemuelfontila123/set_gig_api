@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_05_155853) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_14_020502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -31,6 +31,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_05_155853) do
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "contact_information_id"
+    t.index ["contact_information_id"], name: "index_bookings_on_contact_information_id"
     t.index ["schedule_id"], name: "index_bookings_on_schedule_id"
   end
 
@@ -39,10 +41,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_05_155853) do
     t.string "last_name"
     t.string "mobile_number"
     t.string "email_address"
-    t.bigint "booking_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["booking_id"], name: "index_contact_information_on_booking_id"
+    t.integer "contact_type", default: 0
+    t.string "password_digest"
   end
 
   create_table "online_links", force: :cascade do |t|
@@ -72,6 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_05_155853) do
     t.index ["booking_id"], name: "index_tentative_lineups_on_booking_id"
   end
 
+  add_foreign_key "bookings", "contact_informations"
   add_foreign_key "bookings", "schedules"
   add_foreign_key "online_links", "bookings"
   add_foreign_key "tentative_lineups", "bookings"

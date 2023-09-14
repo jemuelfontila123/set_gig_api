@@ -2,10 +2,12 @@ class Booking < ApplicationRecord
 
   include ActiveModel::Validations
 
-  belongs_to :schedule
+  belongs_to :schedule 
+  belongs_to :contact_information
+
 
   has_one :online_link, dependent: :destroy
-  has_one :contact_information, dependent: :destroy
+  # has_one :contact_information, dependent: :destroy
   has_one :tentative_lineup, dependent: :destroy
 
   enum status: {pending: 0, denied: 1, approved: 2}
@@ -30,7 +32,9 @@ class Booking < ApplicationRecord
     schedule.update(availability: false)
     OpenScheduleJob.set(wait: WAITING_TIME).perform_later(schedule)
   end
+ 
 
+  # Needs to fix this and add rspec
   def self.create_booking(opts = {})
     Booking.transaction do 
       @booking = Booking.create!(opts[:booking])
