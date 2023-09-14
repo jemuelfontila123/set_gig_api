@@ -21,7 +21,7 @@ RSpec.describe TentativeLineup, type: :model do
   describe 'booking' do 
     it "will be invalid without booking" do 
       subject.booking = nil 
-      expect(subject).to be_valid 
+      expect(subject).not_to be_valid 
     end 
     
     it "will be invalid with production booking" do 

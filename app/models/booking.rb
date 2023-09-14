@@ -7,7 +7,6 @@ class Booking < ApplicationRecord
 
 
   has_one :online_link, dependent: :destroy
-  # has_one :contact_information, dependent: :destroy
   has_one :tentative_lineup, dependent: :destroy
 
   enum status: {pending: 0, denied: 1, approved: 2}
@@ -18,8 +17,8 @@ class Booking < ApplicationRecord
 
   default_scope {order(created_at: :asc)}  
 
-  after_commit :temporarily_close_schedule, on: :create, if: Proc.new {|obj| obj.status!="approved"} 
-  after_commit :update_related_bookings, on: :update, if: Proc.new { |obj| obj.saved_change_to_status? && obj.status == "approved"}
+  after_commit :temporarily_close_schedule, on: :create, if: Proc.new {|obj| obj.pending?} 
+  after_commit :update_related_bookings, on: :update, if: Proc.new { |obj| obj.saved_change_to_status? && obj.approved?}
 
   WAITING_TIME = 3.hours 
 
@@ -35,12 +34,13 @@ class Booking < ApplicationRecord
  
 
   # Needs to fix this and add rspec
-  def self.create_booking(opts = {})
-    Booking.transaction do 
-      @booking = Booking.create!(opts[:booking])
+  def self.guest_create_booking(opts = {})
+    ActiveRecord::Base.transaction do 
+      guest = ContactInformation.create!(opts[:contact_information])
+      @booking = guest.bookings.create!(opts[:booking])
       @booking.create_online_link!(opts[:online_link])  
       @booking.create_contact_information!(opts[:contact_information])  
-      @booking.create_tentative_lineup!(opts[:tentative_lineup]) if opts[:tentative_lineup].present? 
+      @booking.create_tentative_lineup!(opts[:tentative_lineup]) if @booking.schedule.band?
     end
     return @booking
   rescue ActiveRecord::RecordInvalid => e

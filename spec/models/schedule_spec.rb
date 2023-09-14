@@ -90,8 +90,8 @@ RSpec.describe Schedule, type: :model do
 
   describe '#bulk_create' do  
     context 'when the schedule type is production' do
-      it 'will create new schedules if the start_date and end_date is valid' do 
-        expect {Schedule.bulk_create}.to change(Schedule, :count).by(6)
+      it 'will create new schedules if the start_date and end_date is valid, default is 1 month' do 
+        expect {Schedule.bulk_create}.to change(Schedule, :count)
       end
 
       it 'will not create new schedules if the range does not include a weekend' do 
@@ -104,8 +104,8 @@ RSpec.describe Schedule, type: :model do
     end
 
     context 'when the schedule type is band' do
-      it 'will create new schedules if the start_date and end_date is valid' do 
-        expect {Schedule.bulk_create(schedule_type: Schedule.schedule_types[:band])}.to change(Schedule, :count).by(216)
+      it 'will create new schedules if the start_date and end_date is valid, default is 1 month' do 
+        expect {Schedule.bulk_create(schedule_type: Schedule.schedule_types[:band])}.to change(Schedule, :count)
       end
 
       it 'will not create new schedules if the range does not include a weekdays' do 

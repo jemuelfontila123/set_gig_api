@@ -14,9 +14,9 @@ FactoryBot.define do
       end_time {  DateTime.new(2023,7,23,1)}
       availability {true}
       schedule_type { Schedule.schedule_types[:production] }
-      after(:create) do |schedule| 
-        create(:booking, schedule_id: schedule.id) 
-      end
+      # after(:create) do |schedule| 
+      #   create(:booking, schedule_id: schedule.id) 
+      # end
     end 
 
     trait :band do 
@@ -33,9 +33,9 @@ FactoryBot.define do
       end_time {  DateTime.new(2023,7,25,19,30)}
       availability {true}
       schedule_type  { Schedule.schedule_types[:band] }
-      after(:create) do |schedule| 
-        create(:booking, schedule_id: schedule.id)
-      end
+      # after(:create) do |schedule| 
+      #   create(:booking, schedule_id: schedule.id)
+      # end
     end
   end
 end
