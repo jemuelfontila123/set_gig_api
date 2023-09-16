@@ -29,6 +29,28 @@ class Schedule < ApplicationRecord
     end 
     schedules
   end
+
+
+  def can_create?(current_date = DateTime.now)
+    locked_at >= current_date
+  end
+
+  def can_access?
+    locked_token.nil? && locked_at.nil? 
+  end 
+
+  def access_seconds_left 
+    ((locked_at - DateTime.now) * (24 * 60 * 60)).to_i if locked_at.present? 
+  end
+
+  def grant_access(token) 
+    update(locked_token: token, locked_at: DateTime.now + 30.minutes) 
+  end 
+
+  def release_access 
+    update(locked_token: nil, locked_at: nil)  unless can_create? 
+  end 
+
     
 
 

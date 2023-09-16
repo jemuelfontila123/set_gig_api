@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_14_020502) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_15_210045) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -63,6 +63,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_020502) do
     t.integer "schedule_type", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "locked_token"
+    t.datetime "locked_at"
   end
 
   create_table "tentative_lineups", force: :cascade do |t|
