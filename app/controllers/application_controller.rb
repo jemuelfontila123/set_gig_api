@@ -6,7 +6,7 @@ class ApplicationController < ActionController::API
   private 
   
   def require_login
-    if request.headers['Authorization'].present? 
+    if token_exists?
       authenticate_or_request_with_http_token do |token|
         begin
           @jwt_payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
