@@ -1,24 +1,23 @@
-# README
+# About
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+SetGig is a gig booking platform for music production and performers may it be solo artist or full band. 
 
-Things you may want to cover:
+Reserve a schedule based on the available time slot.
 
-* Ruby version
 
-* System dependencies
 
-* Configuration
 
-* Database creation
+# Set Up For Local Instructions
 
-* Database initialization
+* Versions Required
+Ruby Version: 3.1.4t
+Rails Version: 7.0.6
+PSQL: 15.3 
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Instructions
+1. Clone the project
+2. bundle install
+3. rails db:create
+4. rails db:migrate
+5. rails db:seed
+6. rails s
